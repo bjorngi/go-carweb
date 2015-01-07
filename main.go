@@ -10,35 +10,18 @@ import (
 	"net/http"
 )
 
-//func getMusicTracks(trackChan chan *[]media.Track) {
-//	tracks, err := media.GetTracks()
-//	if err != nil {
-//		panic("Failed to get tracks")
-//	}
-//	time.Sleep(time.Second * 2)
-//
-//	trackChan <- tracks
-//}
-
 func musicHandleFunction(res http.ResponseWriter, req *http.Request) {
-	trackChan := make(chan *[]media.Track)
-
-	go func() {
-		tracks, err := media.GetTracks("music")
-		if err != nil {
-			fmt.Printf("Could not get tracks: %v\n", err)
-		}
-		trackChan <- tracks
-
-	}()
-
-	tracks := <-trackChan
+	tracks, err := media.GetTracks("music")
+	if err != nil {
+		fmt.Printf("Could not get tracks: %v\n", err)
+	}
 
 	b, err := json.Marshal(tracks)
 	if err != nil {
 		fmt.Printf("Failed to encode json\n")
 	}
 
+	res.Header().Set("Content-Type", "application/json")
 	res.Write(b)
 
 }
