@@ -1,9 +1,7 @@
 package media
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"testing"
 )
 
@@ -17,16 +15,17 @@ func TestReadDir(t *testing.T) {
 	fmt.Printf("%d songs in directory\n\n", len(files))
 }
 
-func TestGetFileInfo(t *testing.T) {
+func TestGetMP3Info(t *testing.T) {
 	testfile := "../music/The Killers-Human.mp3"
-	f, err := os.Open(testfile)
+	//f, err := os.Open(testfile)
+	//if err != nil {
+	//	t.Errorf("Failed to open: %v\n", testfile)
+	//}
+
+	id3Info, err := getMP3Info(testfile)
 	if err != nil {
-		t.Errorf("Failed to open: %v\n", testfile)
+		t.Errorf("Failed getting MP3Info")
 	}
-
-	reader := bufio.NewReader(f)
-
-	id3Info := getFileInfo(reader)
 
 	if id3Info.Artist != "The Killers" {
 		t.Errorf("Wrong metadata, was expeting \"The Killers\" got \"%v\"", id3Info.Name)
