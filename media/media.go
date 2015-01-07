@@ -3,7 +3,9 @@ package media
 
 import (
 	"bufio"
+	vorbis "code.google.com/p/goflac-meta"
 	"errors"
+	"fmt"
 	"github.com/ascherkus/go-id3/src/id3"
 	"io"
 	"io/ioutil"
@@ -43,6 +45,8 @@ func GetTracks(dir string) (*[]Track, error) {
 			track.Path = path
 
 			Tracks = append(Tracks, *track)
+		case "ogg":
+			getVorbisInfo(path)
 
 		}
 
@@ -85,6 +89,22 @@ func getReader(file string) (io.Reader, error) {
 
 	reader := bufio.NewReader(f)
 	return reader, nil
+
+}
+
+func getVorbisInfo(file string) (*vorbis.Metadata, error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, err
+	}
+
+	defer f.Close()
+
+	metadata := new(vorbis.Metadata)
+	metadata.Read(f)
+	fmt.Printf("%v\n", metadata)
+
+	return metadata, nil
 
 }
 

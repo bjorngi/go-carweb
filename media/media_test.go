@@ -47,5 +47,14 @@ func TestGetTracks(t *testing.T) {
 		t.Errorf("Failed getting all tracks: ", err)
 	}
 
-	fmt.Printf("%+v", tracks)
+	fmt.Printf("TestGetTracks: %+v\n\n", tracks)
+}
+
+func TestGetVorbisInfo(t *testing.T) {
+	testfile := "../music/test.ogg"
+	metadata, err := getVorbisInfo(testfile)
+	if err != nil {
+		t.Errorf("Failed to read vorbis metadata: %v\n", err)
+	}
+	fmt.Printf("%+v\n", metadata)
 }
