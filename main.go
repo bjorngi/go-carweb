@@ -10,19 +10,27 @@ import (
 	"net/http"
 )
 
-func getMusicTracks(trackChan chan *[]media.Track) {
-	tracks, err := media.GetTracks()
-	if err != nil {
-		panic("Failed to get tracks")
-	}
-
-	trackChan <- tracks
-}
+//func getMusicTracks(trackChan chan *[]media.Track) {
+//	tracks, err := media.GetTracks()
+//	if err != nil {
+//		panic("Failed to get tracks")
+//	}
+//	time.Sleep(time.Second * 2)
+//
+//	trackChan <- tracks
+//}
 
 func musicHandleFunction(res http.ResponseWriter, req *http.Request) {
 	trackChan := make(chan *[]media.Track)
 
-	go getMusicTracks(trackChan)
+	go func() {
+		tracks, err := media.GetTracks("music")
+		if err != nil {
+			fmt.Printf("Could not get tracks: %v\n", err)
+		}
+		trackChan <- tracks
+
+	}()
 
 	tracks := <-trackChan
 

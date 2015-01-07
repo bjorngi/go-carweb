@@ -43,7 +43,7 @@ func TestGetFileInfo(t *testing.T) {
 }
 
 func TestGetTracks(t *testing.T) {
-	tracks, err := GetTracks()
+	tracks, err := GetTracks("../music")
 	if err != nil {
 		t.Errorf("Failed getting all tracks: ", err)
 	}

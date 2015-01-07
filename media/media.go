@@ -19,21 +19,21 @@ type Track struct {
 
 // GetTracks goes trough the "../music" directory and parses all mp3's for metadata
 // Returns a slice of Track structs.
-func GetTracks() (*[]Track, error) {
+func GetTracks(dir string) (*[]Track, error) {
 	var Tracks []Track
-
-	fileInfo, err := readDirectory("../music")
+	fileInfo, err := readDirectory(dir)
 	if err != nil {
 		return nil, err
 	}
 
 	for _, f := range fileInfo {
-		path := "/music/" + f.Name()
+		path := dir + "/" + f.Name()
 
-		rd, err := getReader(".." + path)
+		rd, err := getReader(path)
 		if err != nil {
 			return nil, err
 		}
+
 		id3Data := getFileInfo(rd)
 
 		track := parseData(id3Data)
