@@ -2,11 +2,38 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/bjorngi/go-carweb/media"
 	"log"
 	"net/http"
 )
+
+func getMusicTracks(trackChan chan *[]media.Track) {
+	tracks, err := media.GetTracks()
+	if err != nil {
+		panic("Failed to get tracks")
+	}
+
+	trackChan <- tracks
+}
+
+func musicHandleFunction(res http.ResponseWriter, req *http.Request) {
+	trackChan := make(chan *[]media.Track)
+
+	go getMusicTracks(trackChan)
+
+	tracks := <-trackChan
+
+	b, err := json.Marshal(tracks)
+	if err != nil {
+		fmt.Printf("Failed to encode json\n")
+	}
+
+	res.Write(b)
+
+}
 
 func main() {
 	port := flag.Int("port", 8000, "port to serve on")
@@ -17,6 +44,7 @@ func main() {
 
 	http.Handle("/", webFileHanlder)
 	http.Handle("/music/", musicFileHandler)
+	http.HandleFunc("/music/list", musicHandleFunction)
 
 	log.Printf("Running on port %d\n", *port)
 
