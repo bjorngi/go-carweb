@@ -5,7 +5,6 @@ import (
 	"bufio"
 	vorbis "code.google.com/p/goflac-meta"
 	"errors"
-	"fmt"
 	"github.com/ascherkus/go-id3/src/id3"
 	"io"
 	"io/ioutil"
@@ -16,7 +15,7 @@ type Track struct {
 	Name   string `json:"name"`
 	Artist string `json:"artist"`
 	Album  string `json:"album,omitempty"`
-	Path   string `json:"path,omitempty"`
+	Path   string `json:"src"`
 	Genre  string `json:"genre,omitempty"`
 	Type   string `json:"type"`
 }
@@ -42,7 +41,7 @@ func GetTracks(dir string) (*[]Track, error) {
 			}
 
 			track := parseID3(id3Data)
-			track.Path = path
+			track.Path = "http://0.0.0.0:8000/" + path
 
 			Tracks = append(Tracks, *track)
 		case "ogg":
@@ -102,7 +101,6 @@ func getVorbisInfo(file string) (*vorbis.Metadata, error) {
 
 	metadata := new(vorbis.Metadata)
 	metadata.Read(f)
-	fmt.Printf("%v\n", metadata)
 
 	return metadata, nil
 

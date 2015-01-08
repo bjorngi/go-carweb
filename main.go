@@ -22,6 +22,7 @@ func musicHandleFunction(res http.ResponseWriter, req *http.Request) {
 	}
 
 	res.Header().Set("Content-Type", "application/json")
+	res.Header().Set("Access-Control-Allow-Origin", "*")
 	res.Write(b)
 
 }
