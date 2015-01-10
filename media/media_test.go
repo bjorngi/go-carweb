@@ -16,7 +16,7 @@ func TestReadDir(t *testing.T) {
 }
 
 func TestGetMP3Info(t *testing.T) {
-	testfile := "../music/The Killers-Human.mp3"
+	testfile := "../music/06 Hasta Siempre.mp3"
 	//f, err := os.Open(testfile)
 	//if err != nil {
 	//	t.Errorf("Failed to open: %v\n", testfile)
@@ -27,12 +27,12 @@ func TestGetMP3Info(t *testing.T) {
 		t.Errorf("Failed getting MP3Info")
 	}
 
-	if id3Info.Artist != "The Killers" {
-		t.Errorf("Wrong metadata, was expeting \"The Killers\" got \"%v\"", id3Info.Name)
+	if id3Info.Artist != "Antamerica" {
+		t.Errorf("Wrong metadata, was expeting \"Hasta Siempre\" got \"%v\"", id3Info.Artist)
 
 	}
 
-	if id3Info.Name != "Human" {
+	if id3Info.Name != "Hasta Siempre" {
 		t.Errorf("Wrong metadata, was expeting \"Human\" got \"%v\"", id3Info.Name)
 
 	}
