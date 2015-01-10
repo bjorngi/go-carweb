@@ -52,7 +52,6 @@ func GetTracks(dir string) (*[]Track, error) {
 	}
 
 	return &Tracks, nil
-
 }
 
 // parseID3 takes id3.File and pulls out relevant data and makes a Track stucts.
